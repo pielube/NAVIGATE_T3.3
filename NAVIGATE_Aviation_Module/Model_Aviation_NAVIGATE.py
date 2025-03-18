@@ -76,7 +76,7 @@ tech_scen = "t2"
 # mode is faster to use. Full mode allows a larger range of policy interactions
 # and non-CO2 impacts to be calculated. 
 
-run_mode = 0
+run_mode = 1
 
 # the processed grid AIM outputs are stored here in csv format
 data_folder = "aviation_grid_data/"
@@ -95,21 +95,48 @@ price_IAM = func.Read_Price(data_folder + "Prices_KerCO2.csv")
 end_time=time.time()
 load_time=end_time-start_time
 print("Read-in time:")
-print(load_time)
+print(str(round(load_time,2))+" s")
 
 # A routine loops over the TIAM-UCL 16 regions and all years 2020-2100, working out total fuel use. 
 
 start_time=time.time()
 
 # the TIAM regions to loop over
-regs = ["AFR","AUS","CAN","CSA","CHI","EEU","FSU","IND","JPN","MEX","MEA","ODA","SKO","UK","USA","WEU"]
+regs = ["AFE",
+        "AFN",
+        "AFW",
+        "AFZ",
+        "NIG",
+        "RUS",
+        "ASC",
+        "ASE",
+        "CHN",
+        "IDN",
+        "IND",
+        "ASO",
+        "JPN",
+        "SKT",
+        "ANZ",
+        "USA",
+        "CAN",
+        "LAM",
+        "BRA",
+        "MEX",
+        "CHL",
+        "ENE",
+        "ENW",
+        "EUE",
+        "EUW",
+        "EUM",
+        "MEA",
+        "MDA"]
 
 # year range to cover. 
 ystart = 2005
 yend = 2100
 
 # output filename
-filename_out = "output_byregion_"+soc_scen+"_"+tech_scen+".csv"
+filename_out = "output_byregion_"+soc_scen+"_"+tech_scen+"_1.csv"
 
 # global totals across all variables and regions to write out
 data_out = np.zeros([yend-ystart+1,len(regs),len(base_grid[0][0])+4]) 
@@ -152,7 +179,7 @@ else:
 interp_time=end_time-start_time
 
 print("Time for test interpolatation to 2100:")
+print(str(round(interp_time,2))+" s")
 
-print(interp_time)
 ###############################################################################
 

@@ -23,14 +23,15 @@ def Read_Data(csv_filename):
 # adapted generic function to write data to a csv file, given a filename, array, headers and region designation
 # 'regs' is an array of strings giving region designation
 # 'data' has domeensions (year,region,variable)
-def Write_Data(csv_filename,csv_headers,regs,data):
-    csvfile=open(csv_filename,'w')
-    csv.writer(csvfile).writerow(csv_headers)
-    for y in range(0,len(data)):           # across different years
-        for j in range(0,len(data[y])):           # across different regions
-           thisrow = [str(data[y,j,0])]+[regs[j]]+list(map(str,data[y,j,1:]))
-           csv.writer(csvfile).writerow(thisrow)
-    csvfile.close()
+def Write_Data(csv_filename, csv_headers, regs, data):
+    with open(csv_filename, 'w', newline='') as csvfile:  # Add newline=''
+        writer = csv.writer(csvfile)
+        writer.writerow(csv_headers)
+        
+        for y in range(len(data)):  # Loop across years
+            for j in range(len(data[y])):  # Loop across regions
+                thisrow = [str(data[y, j, 0])] + [regs[j]] + list(map(str, data[y, j, 1:]))
+                writer.writerow(thisrow)  # Write row correctly
 
 # put the data in the format that we want. For now this 
 # is just a big array (so that it can safely be passed 
@@ -88,7 +89,7 @@ def Read_Price(csv_filename):
     # these should be the same between all sets of model
     # runs and are not expected to change
     ylength = 2100 - 2005 + 1   # i.e. all years from 2005 to 2100
-    clength = 16 # the number of countries in the TIAM output
+    clength = 29 # the number of countries in the TIAM output
     nvar = 2     # the number of variables we are outputting: kerosene and carbon prices.
 
     priceout=np.empty([ylength,clength,nvar])   # year, reg, variable
